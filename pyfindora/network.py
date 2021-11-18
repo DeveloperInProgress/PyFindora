@@ -13,15 +13,15 @@ class Network:
         }
     
     @property
-    def submitRoute():
+    def submitRoute(self):
         return f"{self.config['protocol']}://{self.config['host']}:{self.config['submitPort']}"
 
     @property
-    def queryRoute():
+    def queryRoute(self):
         return f"{self.config['protocol']}://{self.config['host']}:{self.config['queryPort']}"
 
     @property
-    def ledgerRoute():
+    def ledgerRoute(self):
         return f"{self.config['protocol']}://{self.config['host']}:{self.config['ledgerPort']}"
 
     async def getTxnStatus(self, handle):
@@ -92,32 +92,32 @@ class Network:
         memo = await requests.get(f'{self.queryRoute}/get_owner_memo/{utxoSid}')
         return memo.content
 
-    async def getCreatedAssets(address):
+    async def getCreatedAssets(self, address):
         logging.info(f'request: {self.queryRoute}/get_created_asset/{address}')
         sids = await requests.get(f'{self.queryRoute}/get_created_assets/{address}')
         return sids.content
 
-    async def getTracedAssets(address):
+    async def getTracedAssets(self, address):
         logging.info(f'request: {self.queryRoute}/get_traced_assets/{address}')
         sids = await requests.get(f'{self.queryRoute}/get_traced_assets'/{address})
         return sids.content
 
-    async def getCustomData(key):
+    async def getCustomData(self, key):
         logging.info(f'request: {self.queryRoute}/get_custom_data/{key}')
         result = await requests.get(f'{self.queryRoute}/get_custom_data/{key}')
         return result.content
 
-    async def storeCustomData(customData):
+    async def storeCustomData(self, customData):
         logging.info(f'request: {self.queryRoute}/store_custom_data')
         result = await requests.post(f'{self.queryRoute}/store_custom_data')
         return result.content
 
-    async def getIssuedRecords(address):
+    async def getIssuedRecords(self, address):
         logging.info(f'request: {self.queryRoute}/get_issued_records/{address}')
         records = await requests.get(f'{self.queryRoute}/get_issued_records/{address}')
         return records.content
 
-    async def getCustomDataHash(key):
+    async def getCustomDataHash(self, key):
         logging.log(f'request: ${self.ledgerRoute}/kv_lookup/{key}')
         result = await requests.get(f'{self.ledgerRoute}/kv_lookup/{key}')
         return result.content
